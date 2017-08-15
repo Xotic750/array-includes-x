@@ -29,11 +29,12 @@ Determines whether an array includes a certain element.
 **Copyright**: Xotic750  
 <a name="exp_module_array-includes-x--module.exports"></a>
 
-### `module.exports` ⏏
+### `module.exports` ⇒ <code>boolean</code> ⏏
 This method determines whether an array includes a certain element,
 returning true or false as appropriate.
 
 **Kind**: Exported member  
+**Returns**: <code>boolean</code> - `true` if searched element is included; otherwise `false`.  
 **Throws**:
 
 - <code>TypeError</code> If `array` is `null` or `undefined`.

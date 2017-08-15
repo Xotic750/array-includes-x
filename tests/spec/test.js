@@ -41,11 +41,18 @@ describe('includes', function () {
   });
 
   var sparseish = {
-    0: 'a', 1: 'b', length: 5
+    0: 'a',
+    1: 'b',
+    length: 5
   };
+
   var overfullarrayish = {
-    0: 'a', 1: 'b', 2: 'c', length: 2
+    0: 'a',
+    1: 'b',
+    2: 'c',
+    length: 2
   };
+
   var numberish = {
     valueOf: function () {
       return 2;
@@ -76,6 +83,8 @@ describe('includes', function () {
 
     expect(includes(overfullarrayish, 'b')).toBe(true, 'sparse array-like object includes "b"');
     expect(includes(overfullarrayish, 'c')).toBe(false, 'sparse array-like object does not include "c"');
+
+    expect(includes('abc', 'c')).toBe(true, 'string includes "c"');
   });
 
   describe('fromIndex', function () {

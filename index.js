@@ -9,57 +9,53 @@
 
 'use strict';
 
-var $isNaN = require('is-nan');
-var isString = require('is-string');
-var isUndefined = require('validate.io-undefined');
-var toInteger = require('to-integer-x');
 var toObject = require('to-object-x');
-var toLength = require('to-length-x');
-var sameValueZero = require('same-value-zero-x');
-var findIndex = require('find-index-x');
-var splitString = require('has-boxed-string-x') === false;
-var indexOf = require('index-of-x');
 var nativeIncludes = Array.prototype.includes;
 var $includes;
 
 if (nativeIncludes) {
-  var numberish = {
-    valueOf: function () {
-      return 2;
-    }
+  var arr = {
+    1: 'a',
+    2: NaN,
+    3: -0,
+    length: 5
   };
 
-  var arr = [
-    'a',
-    'b',
-    'c'
-  ];
-
   try {
-    if (nativeIncludes.call(arr, 'a', numberish) === false && nativeIncludes(arr, 'a')) {
+    if (nativeIncludes.call(arr, void 0, -1) && nativeIncludes.call(arr, NaN) && nativeIncludes.call('abc', 'c')) {
       $includes = function includes(array, searchElement) {
+        var object = toObject(array);
         var args = [searchElement];
         if (arguments.length > 2) {
           args[1] = arguments[2];
         }
 
-        return nativeIncludes.apply(array, args);
+        return nativeIncludes.apply(object, args);
       };
     }
   } catch (ignore) {}
 }
 
 if (Boolean($includes) === false) {
-/*
- * This method returns an index in the array, if an element in the array
- * satisfies the provided testing function. Otherwise -1 is returned.
- *
- * @private
- * @param {Array} object - The array to search.
- * @param {*} searchElement - Element to locate in the array.
- * @param {number} fromIndex - The index to start the search at.
- * @returns {number} Returns index of found element, otherwise -1.
- */
+  var isString = require('is-string');
+  var isUndefined = require('validate.io-undefined');
+  var toLength = require('to-length-x');
+  var sameValueZero = require('same-value-zero-x');
+  var findIndex = require('find-index-x');
+  var splitString = require('has-boxed-string-x') === false;
+  var indexOf = require('index-of-x');
+  var calcFromIndex = require('calculate-from-index-x');
+
+  /*
+   * This method returns an index in the array, if an element in the array
+   * satisfies the provided testing function. Otherwise -1 is returned.
+   *
+   * @private
+   * @param {Array} object - The array to search.
+   * @param {*} searchElement - Element to locate in the array.
+   * @param {number} fromIndex - The index to start the search at.
+   * @returns {number} Returns index of found element, otherwise -1.
+   */
   var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
     var fIdx = fromIndex;
     var length = toLength(object.length);
@@ -82,15 +78,14 @@ if (Boolean($includes) === false) {
       return -1;
     }
 
-    if (isUndefined(searchElement) || $isNaN(searchElement)) {
-      var fromIndex = toInteger(arguments[2]);
-      if (fromIndex < length) {
-        if (fromIndex < 0) {
-          fromIndex = length - Math.abs(fromIndex);
-          if (fromIndex < 0) {
-            fromIndex = 0;
-          }
-        }
+    if (isUndefined(searchElement)) {
+      var fromIndex = calcFromIndex(iterable, arguments[2]);
+      if (fromIndex >= length) {
+        return -1;
+      }
+
+      if (fromIndex < 0) {
+        fromIndex = 0;
       }
 
       if (fromIndex > 0) {
@@ -102,11 +97,7 @@ if (Boolean($includes) === false) {
       }) > -1;
     }
 
-    if (arguments.length > 2) {
-      return indexOf(iterable, searchElement, arguments[2]) > -1;
-    }
-
-    return indexOf(iterable, searchElement) > -1;
+    return indexOf(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
   };
 }
 
@@ -120,6 +111,7 @@ if (Boolean($includes) === false) {
  * @param {number} [fromIndex] - The position in this array at which to begin
  *  searching for searchElement. A negative value searches from the index of
  *  array.length + fromIndex by asc. Defaults to 0.
+ * @returns {boolean} `true` if searched element is included; otherwise `false`.
  * @example
  * var includes = require('array-includes-x');
  *
