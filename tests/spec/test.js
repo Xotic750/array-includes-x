@@ -24,6 +24,31 @@ if (typeof module === 'object' && module.exports) {
 var itHasDoc = typeof document !== 'undefined' && document ? it : xit;
 
 describe('includes', function () {
+  var sparseish;
+  var overfullarrayish;
+  var numberish;
+
+  beforeEach(function () {
+    sparseish = {
+      0: 'a',
+      1: 'b',
+      length: 5
+    };
+
+    overfullarrayish = {
+      0: 'a',
+      1: 'b',
+      2: 'c',
+      length: 2
+    };
+
+    numberish = {
+      valueOf: function () {
+        return 2;
+      }
+    };
+  });
+
   it('is a function', function () {
     expect(typeof includes).toBe('function');
   });
@@ -41,25 +66,6 @@ describe('includes', function () {
       includes(null);
     }).toThrow();
   });
-
-  var sparseish = {
-    0: 'a',
-    1: 'b',
-    length: 5
-  };
-
-  var overfullarrayish = {
-    0: 'a',
-    1: 'b',
-    2: 'c',
-    length: 2
-  };
-
-  var numberish = {
-    valueOf: function () {
-      return 2;
-    }
-  };
 
   it('simple examples', function () {
     expect(includes([
@@ -134,6 +140,10 @@ describe('includes', function () {
       expect(includes(sparseish, 'b', -4)).toBe(true, 'finds -4th item with -4 fromIndex');
       expect(includes(sparseish, 'a', -4)).toBe(false, 'does not find -5th item with -4 fromIndex');
       expect(includes(sparseish, 'a', -5)).toBe(true, 'finds -5th item with -5 fromIndex');
+    });
+
+    it('Uses same value zero', function () {
+      expect(includes([-0], 0)).toBe(true);
     });
 
     it('should work with strings', function () {

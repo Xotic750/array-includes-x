@@ -1,6 +1,6 @@
 /**
  * @file Determines whether an array includes a certain element.
- * @version 1.1.0
+ * @version 2.0.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -14,24 +14,31 @@ var nativeIncludes = typeof Array.prototype.includes === 'function' && Array.pro
 var isWorking;
 if (nativeIncludes) {
   var attempt = require('attempt-x');
-  var arr = {
-    1: 'a',
-    2: NaN,
-    3: -0,
-    length: 5
-  };
+  var arr;
 
   // eslint-disable-next-line no-useless-call
   var res = attempt.call(null, nativeIncludes, 'a');
   isWorking = res.threw;
 
   if (isWorking) {
+    arr = {
+      1: 'a',
+      2: NaN,
+      3: -0,
+      length: 5
+    };
+
     res = attempt.call(arr, nativeIncludes, void 0, -1);
     isWorking = res.threw === false && res.value === true;
   }
 
   if (isWorking) {
     res = attempt.call(arr, nativeIncludes, NaN);
+    isWorking = res.threw === false && res.value === true;
+  }
+
+  if (isWorking) {
+    res = attempt.call(arr, nativeIncludes, 0);
     isWorking = res.threw === false && res.value === true;
   }
 
