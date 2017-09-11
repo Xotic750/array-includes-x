@@ -1,6 +1,6 @@
 /**
  * @file Determines whether an array includes a certain element.
- * @version 1.0.0
+ * @version 1.1.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -9,11 +9,11 @@
 
 'use strict';
 
-var toObject = require('to-object-x');
-var nativeIncludes = Array.prototype.includes;
-var $includes;
+var nativeIncludes = typeof Array.prototype.includes === 'function' && Array.prototype.includes;
 
+var isWorking;
 if (nativeIncludes) {
+  var attempt = require('attempt-x');
   var arr = {
     1: 'a',
     2: NaN,
@@ -21,28 +21,58 @@ if (nativeIncludes) {
     length: 5
   };
 
-  try {
-    if (nativeIncludes.call(arr, void 0, -1) && nativeIncludes.call(arr, NaN) && nativeIncludes.call('abc', 'c')) {
-      $includes = function includes(array, searchElement) {
-        var object = toObject(array);
-        var args = [searchElement];
-        if (arguments.length > 2) {
-          args[1] = arguments[2];
-        }
+  // eslint-disable-next-line no-useless-call
+  var res = attempt.call(null, nativeIncludes, 'a');
+  isWorking = res.threw;
 
-        return nativeIncludes.apply(object, args);
-      };
-    }
-  } catch (ignore) {}
+  if (isWorking) {
+    res = attempt.call(arr, nativeIncludes, void 0, -1);
+    isWorking = res.threw === false && res.value === true;
+  }
+
+  if (isWorking) {
+    res = attempt.call(arr, nativeIncludes, NaN);
+    isWorking = res.threw === false && res.value === true;
+  }
+
+  if (isWorking) {
+    var testArr = [];
+    testArr.length = 2;
+    testArr[1] = null;
+    res = attempt.call(testArr, nativeIncludes, void 0);
+    isWorking = res.threw === false && res.value === true;
+  }
+
+  if (isWorking) {
+    res = attempt.call('abc', nativeIncludes, 'c');
+    isWorking = res.threw === false && res.value === true;
+  }
+
+  if (isWorking) {
+    res = attempt.call((function () {
+      return arguments;
+    }('a', 'b', 'c')), nativeIncludes, 'c');
+    isWorking = res.threw === false && res.value === true;
+  }
 }
 
-if (Boolean($includes) === false) {
-  var isString = require('is-string');
+var $includes;
+if (isWorking) {
+  $includes = function includes(array, searchElement) {
+    var args = [searchElement];
+    if (arguments.length > 2) {
+      args[1] = arguments[2];
+    }
+
+    return nativeIncludes.apply(array, args);
+  };
+} else {
+  var toObject = require('to-object-x');
   var isUndefined = require('validate.io-undefined');
   var toLength = require('to-length-x');
   var sameValueZero = require('same-value-zero-x');
   var findIndex = require('find-index-x');
-  var splitString = require('has-boxed-string-x') === false;
+  var splitIfBoxedBug = require('split-if-boxed-bug-x');
   var indexOf = require('index-of-x');
   var calcFromIndex = require('calculate-from-index-x');
 
@@ -72,7 +102,7 @@ if (Boolean($includes) === false) {
 
   $includes = function includes(array, searchElement) {
     var object = toObject(array);
-    var iterable = splitString && isString(object) ? object.split('') : object;
+    var iterable = splitIfBoxedBug(object);
     var length = toLength(iterable.length);
     if (length < 1) {
       return -1;

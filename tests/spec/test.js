@@ -21,6 +21,8 @@ if (typeof module === 'object' && module.exports) {
   includes = returnExports;
 }
 
+var itHasDoc = typeof document !== 'undefined' && document ? it : xit;
+
 describe('includes', function () {
   it('is a function', function () {
     expect(typeof includes).toBe('function');
@@ -132,6 +134,25 @@ describe('includes', function () {
       expect(includes(sparseish, 'b', -4)).toBe(true, 'finds -4th item with -4 fromIndex');
       expect(includes(sparseish, 'a', -4)).toBe(false, 'does not find -5th item with -4 fromIndex');
       expect(includes(sparseish, 'a', -5)).toBe(true, 'finds -5th item with -5 fromIndex');
+    });
+
+    it('should work with strings', function () {
+      expect(includes('abc', 'b')).toBe(true);
+    });
+
+    it('should work with arguments', function () {
+      var obj = (function () {
+        return arguments;
+      }('a', 'b', 'c'));
+
+      expect(includes(obj, 'b')).toBe(true);
+    });
+
+    itHasDoc('should work wih DOM elements', function () {
+      var fragment = document.createDocumentFragment();
+      var div = document.createElement('div');
+      fragment.appendChild(div);
+      expect(includes(fragment.childNodes, div)).toBe(true);
     });
   });
 });
