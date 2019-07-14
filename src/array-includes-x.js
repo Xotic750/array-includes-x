@@ -7,17 +7,16 @@
  * @module array-includes-x
  */
 
-'use strict';
+const nativeIncludes = typeof Array.prototype.includes === 'function' && Array.prototype.includes;
 
-var nativeIncludes = typeof Array.prototype.includes === 'function' && Array.prototype.includes;
+let isWorking;
 
-var isWorking;
 if (nativeIncludes) {
-  var attempt = require('attempt-x');
-  var arr;
+  const attempt = require('attempt-x');
+  let arr;
 
   // eslint-disable-next-line no-useless-call
-  var res = attempt.call(null, nativeIncludes, 'a');
+  let res = attempt.call(null, nativeIncludes, 'a');
   isWorking = res.threw;
 
   if (isWorking) {
@@ -25,7 +24,7 @@ if (nativeIncludes) {
       1: 'a',
       2: NaN,
       3: -0,
-      length: 5
+      length: 5,
     };
 
     res = attempt.call(arr, nativeIncludes, void 0, -1);
@@ -43,7 +42,7 @@ if (nativeIncludes) {
   }
 
   if (isWorking) {
-    var testArr = [];
+    const testArr = [];
     testArr.length = 2;
     testArr[1] = null;
     res = attempt.call(testArr, nativeIncludes, void 0);
@@ -56,17 +55,23 @@ if (nativeIncludes) {
   }
 
   if (isWorking) {
-    res = attempt.call((function () {
-      return arguments;
-    }('a', 'b', 'c')), nativeIncludes, 'c');
+    res = attempt.call(
+      (function() {
+        return arguments;
+      })('a', 'b', 'c'),
+      nativeIncludes,
+      'c',
+    );
     isWorking = res.threw === false && res.value === true;
   }
 }
 
-var $includes;
+let $includes;
+
 if (isWorking) {
   $includes = function includes(array, searchElement) {
-    var args = [searchElement];
+    const args = [searchElement];
+
     if (arguments.length > 2) {
       args[1] = arguments[2];
     }
@@ -74,14 +79,14 @@ if (isWorking) {
     return nativeIncludes.apply(array, args);
   };
 } else {
-  var toObject = require('to-object-x');
-  var isUndefined = require('validate.io-undefined');
-  var toLength = require('to-length-x');
-  var sameValueZero = require('same-value-zero-x');
-  var findIndex = require('find-index-x');
-  var splitIfBoxedBug = require('split-if-boxed-bug-x');
-  var indexOf = require('index-of-x');
-  var calcFromIndex = require('calculate-from-index-x');
+  const toObject = require('to-object-x');
+  const isUndefined = require('validate.io-undefined');
+  const toLength = require('to-length-x');
+  const sameValueZero = require('same-value-zero-x');
+  const findIndex = require('find-index-x');
+  const splitIfBoxedBug = require('split-if-boxed-bug-x');
+  const indexOf = require('index-of-x');
+  const calcFromIndex = require('calculate-from-index-x');
 
   /*
    * This method returns an index in the array, if an element in the array
@@ -93,9 +98,9 @@ if (isWorking) {
    * @param {number} fromIndex - The index to start the search at.
    * @returns {number} Returns index of found element, otherwise -1.
    */
-  var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
-    var fIdx = fromIndex;
-    var length = toLength(object.length);
+  const findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
+    let fIdx = fromIndex;
+    const length = toLength(object.length);
     while (fIdx < length) {
       if (sameValueZero(object[fIdx], searchElement)) {
         return fIdx;
@@ -108,15 +113,17 @@ if (isWorking) {
   };
 
   $includes = function includes(array, searchElement) {
-    var object = toObject(array);
-    var iterable = splitIfBoxedBug(object);
-    var length = toLength(iterable.length);
+    const object = toObject(array);
+    const iterable = splitIfBoxedBug(object);
+    const length = toLength(iterable.length);
+
     if (length < 1) {
       return -1;
     }
 
     if (isUndefined(searchElement)) {
-      var fromIndex = calcFromIndex(iterable, arguments[2]);
+      let fromIndex = calcFromIndex(iterable, arguments[2]);
+
       if (fromIndex >= length) {
         return -1;
       }
@@ -129,9 +136,11 @@ if (isWorking) {
         return findIdxFrom(iterable, searchElement, fromIndex) > -1;
       }
 
-      return findIndex(iterable, function (element) {
-        return sameValueZero(searchElement, element);
-      }) > -1;
+      return (
+        findIndex(iterable, function(element) {
+          return sameValueZero(searchElement, element);
+        }) > -1
+      );
     }
 
     return indexOf(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
