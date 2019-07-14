@@ -53,10 +53,10 @@
     "calculate-from-index-x": "^2.2.0",
     "find-index-x": "^2.1.0",
     "index-of-x": "^2.3.0",
-    "same-value-zero-x": "^2.0.6",
+    "same-value-zero-x": "^2.0.7",
     "split-if-boxed-bug-x": "^2.0.3",
-    "to-length-x": "^3.0.0",
-    "to-object-x": "^1.5.0",
+    "to-length-x": "^4.0.1",
+    "to-object-x": "^2.0.0",
     "validate.io-undefined": "^1.0.3"
   },
   "devDependencies": {
