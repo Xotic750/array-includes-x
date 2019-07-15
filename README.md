@@ -21,15 +21,13 @@
 <a name="module_array-includes-x"></a>
 
 ## array-includes-x
+
 Determines whether an array includes a certain element.
 
-**Version**: 2.0.0  
-**Author**: Xotic750 <Xotic750@gmail.com>  
-**License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
-**Copyright**: Xotic750  
 <a name="exp_module_array-includes-x--module.exports"></a>
 
 ### `module.exports` ⇒ <code>boolean</code> ⏏
+
 This method determines whether an array includes a certain element,
 returning true or false as appropriate.
 
@@ -39,20 +37,20 @@ returning true or false as appropriate.
 
 - <code>TypeError</code> If `array` is `null` or `undefined`.
 
+| Param         | Type                | Description                                                                                                                                                           |
+| ------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| array         | <code>Array</code>  | The array to search.                                                                                                                                                  |
+| searchElement | <code>\*</code>     | Element to locate in the `array`.                                                                                                                                     |
+| [fromIndex]   | <code>number</code> | The position in this array at which to begin searching for searchElement. A negative value searches from the index of array.length + fromIndex by asc. Defaults to 0. |
 
-| Param | Type | Description |
-| --- | --- | --- |
-| array | <code>Array</code> | The array to search. |
-| searchElement | <code>\*</code> | Element to locate in the `array`. |
-| [fromIndex] | <code>number</code> | The position in this array at which to begin  searching for searchElement. A negative value searches from the index of  array.length + fromIndex by asc. Defaults to 0. |
+**Example**
 
-**Example**  
 ```js
-var includes = require('array-includes-x');
+import includes from 'array-includes-x';
 
-var subject = [2, 3, undefined, true, 'hej', null, 2, false, 0, -0, NaN];
-includes(subject, undefined); // true
-includes(subject, undefined, 3); // false
-includes(subject, NaN); // true
-includes(subject, 10); // false
+const subject = [2, 3, undefined, true, 'hej', null, 2, false, 0, -0, NaN];
+console.log(includes(subject, undefined)); // true
+console.log(includes(subject, undefined, 3)); // false
+console.log(includes(subject, NaN)); // true
+console.log(includes(subject, 10)); // false
 ```
