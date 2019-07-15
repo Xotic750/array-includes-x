@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "attempt-x": "^2.0.4",
-    "calculate-from-index-x": "^2.2.0",
+    "calculate-from-index-x": "^3.0.1",
     "find-index-x": "^2.1.0",
     "index-of-x": "^2.3.0",
     "same-value-zero-x": "^2.0.8",
