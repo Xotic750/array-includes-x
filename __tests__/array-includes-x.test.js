@@ -7,7 +7,6 @@ describe('includes', function() {
   let overfullarrayish;
   let numberish;
 
-  /* eslint-disable-next-line jest/no-hooks */
   beforeEach(function() {
     sparseish = {
       0: 'a',
@@ -41,7 +40,6 @@ describe('includes', function() {
     }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
-      /* eslint-disable-next-line no-void */
       includes(void 0);
     }).toThrowErrorMatchingSnapshot();
 
@@ -119,7 +117,6 @@ describe('includes', function() {
     it('should work with arguments', function() {
       expect.assertions(1);
       const obj = (function getArgs() {
-        /* eslint-disable-next-line prefer-rest-params */
         return arguments;
       })('a', 'b', 'c');
 
