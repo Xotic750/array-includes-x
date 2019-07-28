@@ -54,8 +54,10 @@
     "calculate-from-index-x": "^3.0.17",
     "find-index-x": "^3.0.16",
     "index-of-x": "^3.0.16",
+    "require-object-coercible-x": "^2.0.26",
     "same-value-zero-x": "^2.0.28",
     "split-if-boxed-bug-x": "^2.0.22",
+    "to-boolean-x": "^2.0.24",
     "to-length-x": "^4.0.25",
     "to-object-x": "^2.0.20"
   },

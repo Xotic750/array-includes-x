@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T21:54:02.839Z",
+  "date": "2019-07-28T21:30:07.964Z",
   "describe": "",
   "description": "Determines whether an array includes a certain element.",
   "file": "array-includes-x.js",
-  "hash": "01431dac4ab9d0282db2",
+  "hash": "5e6c6dde9794a52f1c5f",
   "license": "MIT",
   "version": "3.0.16"
 }
@@ -1653,23 +1653,23 @@ var pFindIndex = typeof Array.prototype.findIndex === 'function' && Array.protot
 var isWorking;
 
 if (pFindIndex) {
-  var testArr = [];
-  testArr.length = 2;
-  testArr[1] = 1;
-  var res = attempt_x_esm.call(testArr, pFindIndex, function (item, idx) {
+  var find_index_x_esm_testArr = [];
+  find_index_x_esm_testArr.length = 2;
+  find_index_x_esm_testArr[1] = 1;
+  var find_index_x_esm_res = attempt_x_esm.call(find_index_x_esm_testArr, pFindIndex, function (item, idx) {
     find_index_x_esm_newArrowCheck(this, find_index_x_esm_this);
 
     return idx === 0;
   }.bind(undefined));
-  isWorking = res.threw === false && res.value === 0;
+  isWorking = find_index_x_esm_res.threw === false && find_index_x_esm_res.value === 0;
 
   if (isWorking) {
-    res = attempt_x_esm.call(1, pFindIndex, function (item, idx) {
+    find_index_x_esm_res = attempt_x_esm.call(1, pFindIndex, function (item, idx) {
       find_index_x_esm_newArrowCheck(this, find_index_x_esm_this);
 
       return idx === 0;
     }.bind(undefined));
-    isWorking = res.threw === false && res.value === -1;
+    isWorking = find_index_x_esm_res.threw === false && find_index_x_esm_res.value === -1;
   }
 
   if (isWorking) {
@@ -1677,16 +1677,16 @@ if (pFindIndex) {
   }
 
   if (isWorking) {
-    res = attempt_x_esm.call('abc', pFindIndex, function (item) {
+    find_index_x_esm_res = attempt_x_esm.call('abc', pFindIndex, function (item) {
       find_index_x_esm_newArrowCheck(this, find_index_x_esm_this);
 
       return item === 'c';
     }.bind(undefined));
-    isWorking = res.threw === false && res.value === 2;
+    isWorking = find_index_x_esm_res.threw === false && find_index_x_esm_res.value === 2;
   }
 
   if (isWorking) {
-    res = attempt_x_esm.call(function getArgs() {
+    find_index_x_esm_res = attempt_x_esm.call(function getArgs() {
       /* eslint-disable-next-line prefer-rest-params */
       return arguments;
     }('a', 'b', 'c'), pFindIndex, function (item) {
@@ -1694,7 +1694,7 @@ if (pFindIndex) {
 
       return item === 'c';
     }.bind(undefined));
-    isWorking = res.threw === false && res.value === 2;
+    isWorking = find_index_x_esm_res.threw === false && find_index_x_esm_res.value === 2;
   }
 }
 /**
@@ -1966,7 +1966,7 @@ if (index_of_x_esm_isWorking !== true) {
  */
 
 
-var findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
+var index_of_x_esm_findIdxFrom = function findIndexFrom(array, searchElement, fromIndex, extendFn) {
   var fIdx = fromIndex;
   var length = to_length_x_esm(array.length);
 
@@ -2046,7 +2046,7 @@ var index_of_x_esm_indexOf = function indexOf(array, searchElement) {
     }
 
     if (fromIndex > 0) {
-      return findIdxFrom(iterable, searchElement, fromIndex, extendFn);
+      return index_of_x_esm_findIdxFrom(iterable, searchElement, fromIndex, extendFn);
     }
 
     return find_index_x_esm(iterable, function (element, index) {
@@ -2076,6 +2076,7 @@ var index_of_x_esm_indexOf = function indexOf(array, searchElement) {
 
 
 // CONCATENATED MODULE: ./dist/array-includes-x.esm.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return array_includes_x_esm_implementation; });
 function array_includes_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
@@ -2086,78 +2087,72 @@ function array_includes_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThi
 
 
 
-var nativeIncludes = typeof Array.prototype.includes === 'function' && Array.prototype.includes;
-var array_includes_x_esm_isWorking;
-
-if (nativeIncludes) {
-  var arr;
-  var array_includes_x_esm_res = attempt_x_esm.call(null, nativeIncludes, 'a');
-  array_includes_x_esm_isWorking = array_includes_x_esm_res.threw;
-
-  if (array_includes_x_esm_isWorking) {
-    arr = {
-      1: 'a',
-      2: NaN,
-      3: -0,
-      length: 5
-    };
-    /* eslint-disable-next-line no-void */
-
-    array_includes_x_esm_res = attempt_x_esm.call(arr, nativeIncludes, void 0, -1);
-    array_includes_x_esm_isWorking = array_includes_x_esm_res.threw === false && array_includes_x_esm_res.value === true;
-  }
-
-  if (array_includes_x_esm_isWorking) {
-    array_includes_x_esm_res = attempt_x_esm.call(arr, nativeIncludes, NaN);
-    array_includes_x_esm_isWorking = array_includes_x_esm_res.threw === false && array_includes_x_esm_res.value === true;
-  }
-
-  if (array_includes_x_esm_isWorking) {
-    array_includes_x_esm_res = attempt_x_esm.call(arr, nativeIncludes, 0);
-    array_includes_x_esm_isWorking = array_includes_x_esm_res.threw === false && array_includes_x_esm_res.value === true;
-  }
-
-  if (array_includes_x_esm_isWorking) {
-    var array_includes_x_esm_testArr = [];
-    array_includes_x_esm_testArr.length = 2;
-    array_includes_x_esm_testArr[1] = null;
-    /* eslint-disable-next-line no-void */
-
-    array_includes_x_esm_res = attempt_x_esm.call(array_includes_x_esm_testArr, nativeIncludes, void 0);
-    array_includes_x_esm_isWorking = array_includes_x_esm_res.threw === false && array_includes_x_esm_res.value === true;
-  }
-
-  if (array_includes_x_esm_isWorking) {
-    array_includes_x_esm_res = attempt_x_esm.call('abc', nativeIncludes, 'c');
-    array_includes_x_esm_isWorking = array_includes_x_esm_res.threw === false && array_includes_x_esm_res.value === true;
-  }
-
-  if (array_includes_x_esm_isWorking) {
-    array_includes_x_esm_res = attempt_x_esm.call(function getArgs() {
-      /* eslint-disable-next-line prefer-rest-params */
-      return arguments;
-    }('a', 'b', 'c'), nativeIncludes, 'c');
-    array_includes_x_esm_isWorking = array_includes_x_esm_res.threw === false && array_includes_x_esm_res.value === true;
-  }
-}
-/**
- * This method determines whether an array includes a certain element,
- * returning true or false as appropriate.
- *
- * @param {Array} array - The array to search.
- * @throws {TypeError} If `array` is `null` or `undefined`.
- * @param {*} searchElement - Element to locate in the `array`.
- * @param {number} [fromIndex] - The position in this array at which to begin
- *  searching for searchElement. A negative value searches from the index of
- *  array.length + fromIndex by asc. Defaults to 0.
- * @returns {boolean} `true` if searched element is included; otherwise `false`.
- */
 
 
-var $includes;
+var ni = [].includes;
+var nativeIncludes = typeof ni === 'function' && ni;
 
-if (array_includes_x_esm_isWorking) {
-  $includes = function includes(array, searchElement) {
+var getArrayLike = function getArrayLike() {
+  return {
+    1: 'a',
+    2: NaN,
+    3: -0,
+    length: 5
+  };
+};
+
+var array_includes_x_esm_test1 = function test1() {
+  return attempt_x_esm.call(null, nativeIncludes, 'a').threw;
+};
+
+var array_includes_x_esm_test2 = function test2() {
+  var arr = getArrayLike();
+  /* eslint-disable-next-line no-void */
+
+  var res = attempt_x_esm.call(arr, nativeIncludes, void 0, -1);
+  return res.threw === false && res.value === true;
+};
+
+var array_includes_x_esm_test3 = function test3() {
+  var arr = getArrayLike();
+  var res = attempt_x_esm.call(arr, nativeIncludes, NaN);
+  return res.threw === false && res.value === true;
+};
+
+var array_includes_x_esm_test4 = function test4() {
+  var arr = getArrayLike();
+  var res = attempt_x_esm.call(arr, nativeIncludes, 0);
+  return res.threw === false && res.value === true;
+};
+
+var array_includes_x_esm_test5 = function test5() {
+  var testArr = [];
+  testArr.length = 2;
+  testArr[1] = null;
+  /* eslint-disable-next-line no-void */
+
+  var res = attempt_x_esm.call(testArr, nativeIncludes, void 0);
+  return res.threw === false && res.value === true;
+};
+
+var array_includes_x_esm_test6 = function test6() {
+  var res = attempt_x_esm.call('abc', nativeIncludes, 'c');
+  return res.threw === false && res.value === true;
+};
+
+var array_includes_x_esm_test7 = function test7() {
+  var res = attempt_x_esm.call(function getArgs() {
+    /* eslint-disable-next-line prefer-rest-params */
+    return arguments;
+  }('a', 'b', 'c'), nativeIncludes, 'c');
+  return res.threw === false && res.value === true;
+};
+
+var array_includes_x_esm_isWorking = to_boolean_x_esm(nativeIncludes) && array_includes_x_esm_test1() && array_includes_x_esm_test2() && array_includes_x_esm_test3() && array_includes_x_esm_test4() && array_includes_x_esm_test5() && array_includes_x_esm_test6() && array_includes_x_esm_test7();
+
+var array_includes_x_esm_patchedReduce = function patchedReduce() {
+  return function includes(array, searchElement) {
+    require_object_coercible_x_esm(array);
     var args = [searchElement];
 
     if (arguments.length > 2) {
@@ -2167,8 +2162,10 @@ if (array_includes_x_esm_isWorking) {
 
     return nativeIncludes.apply(array, args);
   };
-} else {
-  /*
+};
+
+var array_includes_x_esm_implementation = function implementation() {
+  /**
    * This method returns an index in the array, if an element in the array
    * satisfies the provided testing function. Otherwise -1 is returned.
    *
@@ -2178,7 +2175,7 @@ if (array_includes_x_esm_isWorking) {
    * @param {number} fromIndex - The index to start the search at.
    * @returns {number} Returns index of found element, otherwise -1.
    */
-  var array_includes_x_esm_findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
+  var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
     var fIdx = fromIndex;
     var length = to_length_x_esm(object.length);
 
@@ -2193,9 +2190,35 @@ if (array_includes_x_esm_isWorking) {
     return -1;
   };
 
-  $includes = function includes(array, searchElement) {
+  var runFindIndex = function runFindIndex(obj) {
     var _this = this;
 
+    var iterable = obj.iterable,
+        args = obj.args,
+        length = obj.length,
+        searchElement = obj.searchElement;
+    var fromIndex = calculate_from_index_x_esm(iterable, args[2]);
+
+    if (fromIndex >= length) {
+      return -1;
+    }
+
+    if (fromIndex < 0) {
+      fromIndex = 0;
+    }
+
+    if (fromIndex > 0) {
+      return findIdxFrom(iterable, searchElement, fromIndex) > -1;
+    }
+
+    return find_index_x_esm(iterable, function (element) {
+      array_includes_x_esm_newArrowCheck(this, _this);
+
+      return same_value_zero_x_esm(searchElement, element);
+    }.bind(this)) > -1;
+  };
+
+  return function includes(array, searchElement) {
     var object = to_object_x_esm(array);
     var iterable = split_if_boxed_bug_x_esm(object);
     var length = to_length_x_esm(iterable.length);
@@ -2206,35 +2229,34 @@ if (array_includes_x_esm_isWorking) {
 
     if (typeof searchElement === 'undefined') {
       /* eslint-disable-next-line prefer-rest-params */
-      var fromIndex = calculate_from_index_x_esm(iterable, arguments[2]);
-
-      if (fromIndex >= length) {
-        return -1;
-      }
-
-      if (fromIndex < 0) {
-        fromIndex = 0;
-      }
-
-      if (fromIndex > 0) {
-        return array_includes_x_esm_findIdxFrom(iterable, searchElement, fromIndex) > -1;
-      }
-
-      return find_index_x_esm(iterable, function (element) {
-        array_includes_x_esm_newArrowCheck(this, _this);
-
-        return same_value_zero_x_esm(searchElement, element);
-      }.bind(this)) > -1;
+      return runFindIndex({
+        iterable: iterable,
+        args: arguments,
+        length: length,
+        searchElement: searchElement
+      });
     }
     /* eslint-disable-next-line prefer-rest-params */
 
 
     return index_of_x_esm(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
   };
-}
+};
+/**
+ * This method determines whether an array includes a certain element,
+ * returning true or false as appropriate.
+ *
+ * @param {Array} array - The array to search.
+ * @throws {TypeError} If `array` is `null` or `undefined`.
+ * @param {*} searchElement - Element to locate in the `array`.
+ * @param {number} [fromIndex] - The position in this array at which to begin
+ *  searching for searchElement. A negative value searches from the index of
+ *  array.length + fromIndex by asc. Defaults to 0.
+ * @returns {boolean} `true` if searched element is included; otherwise `false`.
+ */
 
-var inc = $includes;
-/* harmony default export */ var array_includes_x_esm = __webpack_exports__["default"] = (inc);
+var $includes = array_includes_x_esm_isWorking ? array_includes_x_esm_patchedReduce() : array_includes_x_esm_implementation();
+/* harmony default export */ var array_includes_x_esm = __webpack_exports__["default"] = ($includes);
 
 
 
