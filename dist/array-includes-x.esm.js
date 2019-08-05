@@ -1,4 +1,10 @@
-function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 import attempt from 'attempt-x';
 import toObject from 'to-object-x';
@@ -71,97 +77,94 @@ var test7 = function test7() {
 
 var isWorking = toBoolean(nativeIncludes) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
-var patchedReduce = function patchedReduce() {
-  return function includes(array, searchElement) {
-    requireObjectCoercible(array);
-    var args = [searchElement];
+var patchedReduce = function includes(array, searchElement) {
+  requireObjectCoercible(array);
+  var args = [searchElement];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
+
+  return nativeIncludes.apply(array, args);
+}; // eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
+
+/**
+ * This method returns an index in the array, if an element in the array
+ * satisfies the provided testing function. Otherwise -1 is returned.
+ *
+ * @private
+ * @param {Array} object - The array to search.
+ * @param {*} searchElement - Element to locate in the array.
+ * @param {number} fromIndex - The index to start the search at.
+ * @returns {number} Returns index of found element, otherwise -1.
+ */
+// eslint-enable jsdoc/check-param-names
+
+
+var findIdxFrom = function findIndexFrom(args) {
+  var _args = _slicedToArray(args, 3),
+      object = _args[0],
+      searchElement = _args[1],
+      fromIndex = _args[2];
+
+  var fIdx = fromIndex;
+  var length = toLength(object.length);
+
+  while (fIdx < length) {
+    if (sameValueZero(object[fIdx], searchElement)) {
+      return fIdx;
     }
 
-    return nativeIncludes.apply(array, args);
-  };
+    fIdx += 1;
+  }
+
+  return -1;
 };
 
-export var implementation = function implementation() {
-  /**
-   * This method returns an index in the array, if an element in the array
-   * satisfies the provided testing function. Otherwise -1 is returned.
-   *
-   * @private
-   * @param {Array} object - The array to search.
-   * @param {*} searchElement - Element to locate in the array.
-   * @param {number} fromIndex - The index to start the search at.
-   * @returns {number} Returns index of found element, otherwise -1.
-   */
-  var findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
-    var fIdx = fromIndex;
-    var length = toLength(object.length);
+var runFindIndex = function runFindIndex(obj) {
+  var iterable = obj.iterable,
+      args = obj.args,
+      length = obj.length,
+      searchElement = obj.searchElement;
+  var fromIndex = calcFromIndex(iterable, args[2]);
 
-    while (fIdx < length) {
-      if (sameValueZero(object[fIdx], searchElement)) {
-        return fIdx;
-      }
-
-      fIdx += 1;
-    }
-
+  if (fromIndex >= length) {
     return -1;
-  };
+  }
 
-  var runFindIndex = function runFindIndex(obj) {
-    var _this = this;
+  if (fromIndex < 0) {
+    fromIndex = 0;
+  }
 
-    var iterable = obj.iterable,
-        args = obj.args,
-        length = obj.length,
-        searchElement = obj.searchElement;
-    var fromIndex = calcFromIndex(iterable, args[2]);
+  return fromIndex > 0 ? findIdxFrom([iterable, searchElement, fromIndex]) > -1 : findIndex(iterable, function predicate(element) {
+    return sameValueZero(searchElement, element);
+  }) > -1;
+};
 
-    if (fromIndex >= length) {
-      return -1;
-    }
+export var implementation = function includes(array, searchElement) {
+  var object = toObject(array);
+  var iterable = splitIfBoxedBug(object);
+  var length = toLength(iterable.length);
 
-    if (fromIndex < 0) {
-      fromIndex = 0;
-    }
+  if (length < 1) {
+    return -1;
+  }
 
-    if (fromIndex > 0) {
-      return findIdxFrom(iterable, searchElement, fromIndex) > -1;
-    }
-
-    return findIndex(iterable, function (element) {
-      _newArrowCheck(this, _this);
-
-      return sameValueZero(searchElement, element);
-    }.bind(this)) > -1;
-  };
-
-  return function includes(array, searchElement) {
-    var object = toObject(array);
-    var iterable = splitIfBoxedBug(object);
-    var length = toLength(iterable.length);
-
-    if (length < 1) {
-      return -1;
-    }
-
-    if (typeof searchElement === 'undefined') {
-      /* eslint-disable-next-line prefer-rest-params */
-      return runFindIndex({
-        iterable: iterable,
-        args: arguments,
-        length: length,
-        searchElement: searchElement
-      });
-    }
+  if (typeof searchElement === 'undefined') {
     /* eslint-disable-next-line prefer-rest-params */
+    return runFindIndex({
+      iterable: iterable,
+      args: arguments,
+      length: length,
+      searchElement: searchElement
+    });
+  }
+  /* eslint-disable-next-line prefer-rest-params */
 
 
-    return indexOf(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
-  };
+  return indexOf(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
 };
 /**
  * This method determines whether an array includes a certain element,
@@ -176,7 +179,7 @@ export var implementation = function implementation() {
  * @returns {boolean} `true` if searched element is included; otherwise `false`.
  */
 
-var $includes = isWorking ? patchedReduce() : implementation();
+var $includes = isWorking ? patchedReduce : implementation;
 export default $includes;
 
 //# sourceMappingURL=array-includes-x.esm.js.map

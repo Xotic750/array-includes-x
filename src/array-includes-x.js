@@ -78,85 +78,81 @@ const test7 = function test7() {
 
 const isWorking = toBoolean(nativeIncludes) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
-const patchedReduce = function patchedReduce() {
-  return function includes(array, searchElement) {
-    requireObjectCoercible(array);
-    const args = [searchElement];
+const patchedReduce = function includes(array, searchElement) {
+  requireObjectCoercible(array);
+  const args = [searchElement];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
-    }
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
 
-    return nativeIncludes.apply(array, args);
-  };
+  return nativeIncludes.apply(array, args);
 };
 
-export const implementation = function implementation() {
-  /**
-   * This method returns an index in the array, if an element in the array
-   * satisfies the provided testing function. Otherwise -1 is returned.
-   *
-   * @private
-   * @param {Array} object - The array to search.
-   * @param {*} searchElement - Element to locate in the array.
-   * @param {number} fromIndex - The index to start the search at.
-   * @returns {number} Returns index of found element, otherwise -1.
-   */
-  const findIdxFrom = function findIndexFrom(object, searchElement, fromIndex) {
-    let fIdx = fromIndex;
-    const length = toLength(object.length);
-    while (fIdx < length) {
-      if (sameValueZero(object[fIdx], searchElement)) {
-        return fIdx;
-      }
-
-      fIdx += 1;
+// eslint-disable jsdoc/check-param-names
+// noinspection JSCommentMatchesSignature
+/**
+ * This method returns an index in the array, if an element in the array
+ * satisfies the provided testing function. Otherwise -1 is returned.
+ *
+ * @private
+ * @param {Array} object - The array to search.
+ * @param {*} searchElement - Element to locate in the array.
+ * @param {number} fromIndex - The index to start the search at.
+ * @returns {number} Returns index of found element, otherwise -1.
+ */
+// eslint-enable jsdoc/check-param-names
+const findIdxFrom = function findIndexFrom(args) {
+  const [object, searchElement, fromIndex] = args;
+  let fIdx = fromIndex;
+  const length = toLength(object.length);
+  while (fIdx < length) {
+    if (sameValueZero(object[fIdx], searchElement)) {
+      return fIdx;
     }
 
+    fIdx += 1;
+  }
+
+  return -1;
+};
+
+const runFindIndex = function runFindIndex(obj) {
+  const {iterable, args, length, searchElement} = obj;
+  let fromIndex = calcFromIndex(iterable, args[2]);
+
+  if (fromIndex >= length) {
     return -1;
-  };
+  }
 
-  const runFindIndex = function runFindIndex(obj) {
-    const {iterable, args, length, searchElement} = obj;
-    let fromIndex = calcFromIndex(iterable, args[2]);
+  if (fromIndex < 0) {
+    fromIndex = 0;
+  }
 
-    if (fromIndex >= length) {
-      return -1;
-    }
-
-    if (fromIndex < 0) {
-      fromIndex = 0;
-    }
-
-    if (fromIndex > 0) {
-      return findIdxFrom(iterable, searchElement, fromIndex) > -1;
-    }
-
-    return (
-      findIndex(iterable, (element) => {
+  return fromIndex > 0
+    ? findIdxFrom([iterable, searchElement, fromIndex]) > -1
+    : findIndex(iterable, function predicate(element) {
         return sameValueZero(searchElement, element);
-      }) > -1
-    );
-  };
+      }) > -1;
+};
 
-  return function includes(array, searchElement) {
-    const object = toObject(array);
-    const iterable = splitIfBoxedBug(object);
-    const length = toLength(iterable.length);
+export const implementation = function includes(array, searchElement) {
+  const object = toObject(array);
+  const iterable = splitIfBoxedBug(object);
+  const length = toLength(iterable.length);
 
-    if (length < 1) {
-      return -1;
-    }
+  if (length < 1) {
+    return -1;
+  }
 
-    if (typeof searchElement === 'undefined') {
-      /* eslint-disable-next-line prefer-rest-params */
-      return runFindIndex({iterable, args: arguments, length, searchElement});
-    }
-
+  if (typeof searchElement === 'undefined') {
     /* eslint-disable-next-line prefer-rest-params */
-    return indexOf(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
-  };
+    return runFindIndex({iterable, args: arguments, length, searchElement});
+  }
+
+  /* eslint-disable-next-line prefer-rest-params */
+  return indexOf(iterable, searchElement, arguments[2], 'samevaluezero') > -1;
 };
 
 /**
@@ -171,6 +167,6 @@ export const implementation = function implementation() {
  *  array.length + fromIndex by asc. Defaults to 0.
  * @returns {boolean} `true` if searched element is included; otherwise `false`.
  */
-const $includes = isWorking ? patchedReduce() : implementation();
+const $includes = isWorking ? patchedReduce : implementation;
 
 export default $includes;
