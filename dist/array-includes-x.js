@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-05T17:28:08.452Z",
+  "date": "2019-08-05T18:45:53.237Z",
   "describe": "",
   "description": "Determines whether an array includes a certain element.",
   "file": "array-includes-x.js",
   "hash": "2ec5cdddad364255b58c",
   "license": "MIT",
-  "version": "3.0.18"
+  "version": "3.0.19"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
