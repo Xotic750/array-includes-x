@@ -1,6 +1,6 @@
 {
   "name": "array-includes-x",
-  "version": "3.0.17",
+  "version": "3.0.18",
   "description": "Determines whether an array includes a certain element.",
   "homepage": "https://github.com/Xotic750/array-includes-x",
   "author": {
@@ -51,11 +51,11 @@
   },
   "dependencies": {
     "attempt-x": "^2.0.23",
-    "calculate-from-index-x": "^3.0.18",
+    "calculate-from-index-x": "^3.0.19",
     "find-index-x": "^3.0.17",
-    "index-of-x": "^3.0.17",
+    "index-of-x": "^3.0.18",
     "require-object-coercible-x": "^2.0.27",
-    "same-value-zero-x": "^2.0.29",
+    "same-value-zero-x": "^2.0.30",
     "split-if-boxed-bug-x": "^2.0.23",
     "to-boolean-x": "^2.0.25",
     "to-length-x": "^4.0.26",
