@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-06T00:58:43.600Z",
+  "date": "2019-08-06T21:25:47.082Z",
   "describe": "",
   "description": "Determines whether an array includes a certain element.",
   "file": "array-includes-x.js",
