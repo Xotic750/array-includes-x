@@ -16,8 +16,9 @@ import indexOf from 'index-of-x';
 import calcFromIndex from 'calculate-from-index-x';
 import toBoolean from 'to-boolean-x';
 import requireObjectCoercible from 'require-object-coercible-x';
+import methodize from 'simple-methodize-x';
 var ni = [].includes;
-var nativeIncludes = typeof ni === 'function' && ni;
+var nativeIncludes = typeof ni === 'function' && methodize(ni);
 
 var getArrayLike = function getArrayLike() {
   return {
@@ -29,26 +30,31 @@ var getArrayLike = function getArrayLike() {
 };
 
 var test1 = function test1() {
-  return attempt.call(null, nativeIncludes, 'a').threw;
+  return attempt(null, nativeIncludes, 'a').threw;
 };
 
 var test2 = function test2() {
   var arr = getArrayLike();
-  /* eslint-disable-next-line no-void */
-
-  var res = attempt.call(arr, nativeIncludes, void 0, -1);
+  var res = attempt(function attemptee() {
+    /* eslint-disable-next-line no-void */
+    return nativeIncludes(arr, void 0, -1);
+  });
   return res.threw === false && res.value === true;
 };
 
 var test3 = function test3() {
   var arr = getArrayLike();
-  var res = attempt.call(arr, nativeIncludes, NaN);
+  var res = attempt(function attemptee() {
+    return nativeIncludes(arr, NaN);
+  });
   return res.threw === false && res.value === true;
 };
 
 var test4 = function test4() {
   var arr = getArrayLike();
-  var res = attempt.call(arr, nativeIncludes, 0);
+  var res = attempt(function attemptee() {
+    return nativeIncludes(arr, 0);
+  });
   return res.threw === false && res.value === true;
 };
 
@@ -56,37 +62,37 @@ var test5 = function test5() {
   var testArr = [];
   testArr.length = 2;
   testArr[1] = null;
-  /* eslint-disable-next-line no-void */
-
-  var res = attempt.call(testArr, nativeIncludes, void 0);
+  var res = attempt(function attemptee() {
+    /* eslint-disable-next-line no-void */
+    return nativeIncludes(testArr, void 0);
+  });
   return res.threw === false && res.value === true;
 };
 
 var test6 = function test6() {
-  var res = attempt.call('abc', nativeIncludes, 'c');
+  var res = attempt(function attemptee() {
+    return nativeIncludes('abc', 'c');
+  });
   return res.threw === false && res.value === true;
 };
 
 var test7 = function test7() {
-  var res = attempt.call(function getArgs() {
-    /* eslint-disable-next-line prefer-rest-params */
-    return arguments;
-  }('a', 'b', 'c'), nativeIncludes, 'c');
+  var res = attempt(function attemptee() {
+    var args = function getArgs() {
+      /* eslint-disable-next-line prefer-rest-params */
+      return arguments;
+    }('a', 'b', 'c');
+
+    return nativeIncludes(args, 'c');
+  });
   return res.threw === false && res.value === true;
 };
 
 var isWorking = toBoolean(nativeIncludes) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
 var patchedReduce = function includes(array, searchElement) {
-  requireObjectCoercible(array);
-  var args = [searchElement];
-
-  if (arguments.length > 2) {
-    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-    args[1] = arguments[2];
-  }
-
-  return nativeIncludes.apply(array, args);
+  /* eslint-disable-next-line prefer-rest-params */
+  return nativeIncludes(requireObjectCoercible(array), searchElement, arguments[2]);
 }; // eslint-disable jsdoc/check-param-names
 // noinspection JSCommentMatchesSignature
 
