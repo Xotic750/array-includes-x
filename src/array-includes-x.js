@@ -103,6 +103,7 @@ const patchedReduce = function includes(array, searchElement) {
  * @private
  * @param {Array} object - The array to search.
  * @param {*} searchElement - Element to locate in the array.
+ * @param args
  * @param {number} fromIndex - The index to start the search at.
  * @returns {number} Returns index of found element, otherwise -1.
  */

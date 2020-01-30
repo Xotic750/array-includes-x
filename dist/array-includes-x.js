@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-09-05T19:59:40.318Z",
+  "date": "2020-01-30T22:46:24.556Z",
   "describe": "",
   "description": "Determines whether an array includes a certain element.",
   "file": "array-includes-x.js",
-  "hash": "86626f5a64c76c0e7bbc",
+  "hash": "de580a23ca5b1902c7ec",
   "license": "MIT",
   "version": "3.1.2"
 }
@@ -2516,7 +2516,7 @@ function array_includes_x_esm_slicedToArray(arr, i) { return array_includes_x_es
 
 function array_includes_x_esm_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function array_includes_x_esm_iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function array_includes_x_esm_iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function array_includes_x_esm_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -2617,6 +2617,7 @@ var patchedReduce = function includes(array, searchElement) {
  * @private
  * @param {Array} object - The array to search.
  * @param {*} searchElement - Element to locate in the array.
+ * @param args
  * @param {number} fromIndex - The index to start the search at.
  * @returns {number} Returns index of found element, otherwise -1.
  */
